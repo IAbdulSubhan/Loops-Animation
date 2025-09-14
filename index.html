@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Loops in Python</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        .code-block {
+            background-color: #f8f9fa;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            transition: background-color 0.5s;
+            padding: 0.2rem;
+            border-radius: 0.25rem;
+        }
+        .output-box {
+            border: 2px solid #dee2e6;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            min-height: 100px;
+            background-color: #f8f9fa;
+            margin-top: 1rem;
+        }
+        .fruit-box {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin: 0.25rem;
+            border-radius: 0.5rem;
+            background-color: #e9ecef;
+            transition: all 0.3s;
+        }
+        .active-fruit {
+            background-color: #ffc107;
+            transform: scale(1.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .index-label {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .tab-button {
+            background-color: #e9ecef;
+            border: none;
+            padding: 0.5rem 1rem;
+            margin-right: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .tab-button.active {
+            background-color: #ffc107;
+            color: #212529;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-indigo-600 mb-4">Understanding Loops in Python</h1>
+            <p class="text-xl text-gray-600">Learn how to repeat things the smart way!</p>
+        </header>
+
+        <div class="max-w-3xl mx-auto">
+            <!-- Strings Accordion -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
+                <button class="accordion-header w-full text-left px-6 py-4 bg-indigo-100 hover:bg-indigo-200 transition flex justify-between items-center">
+                    <h2 class="text-2xl font-semibold text-indigo-700">Strings</h2>
+                    <i data-feather="chevron-down" class="accordion-icon transform transition"></i>
+                </button>
+                <div class="accordion-content px-6">
+                    <div class="py-4">
+                        <div class="flex mb-4">
+                            <button class="tab-button active" onclick="openTab(event, 'string-manual')">Manual Printing</button>
+                            <button class="tab-button" onclick="openTab(event, 'string-for')">For Loop</button>
+                            <button class="tab-button" onclick="openTab(event, 'string-range')">Range Loop</button>
+                        </div>
+
+                        <!-- Manual Printing Tab -->
+                        <div id="string-manual" class="tab-content active">
+                            <h3 class="text-xl font-semibold mb-3">Printing Each Character Manually</h3>
+                            <div class="code-block">
+                                print("A")<br>
+                                print("p")<br>
+                                print("p")<br>
+                                print("l")<br>
+                                print("e")
+                            </div>
+                            <div class="flex justify-center my-4">
+                                <div id="string-manual-visual" class="flex">
+                                    <div class="fruit-box" data-char="A">A</div>
+                                    <div class="fruit-box" data-char="p">p</div>
+                                    <div class="fruit-box" data-char="p">p</div>
+                                    <div class="fruit-box" data-char="l">l</div>
+                                    <div class="fruit-box" data-char="e">e</div>
+                                </div>
+                            </div>
+                            <div class="output-box" id="string-manual-output"></div>
+                            <button onclick="animateStringManual()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i data-feather="play" class="mr-2"></i> Play Animation
+                            </button>
+                        </div>
+
+                        <!-- For Loop Tab -->
+                        <div id="string-for" class="tab-content">
+                            <h3 class="text-xl font-semibold mb-3">Using <code>for i in string</code></h3>
+                            <div class="code-block">
+                                fruit = "Apple"<br>
+                                for char in fruit:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;print(char)
+                            </div>
+                            <div class="flex justify-center my-4">
+                                <div id="string-for-visual" class="flex">
+                                    <div class="fruit-box" data-char="A">A</div>
+                                    <div class="fruit-box" data-char="p">p</div>
+                                    <div class="fruit-box" data-char="p">p</div>
+                                    <div class="fruit-box" data-char="l">l</div>
+                                    <div class="fruit-box" data-char="e">e</div>
+                                </div>
+                            </div>
+                            <div class="output-box" id="string-for-output"></div>
+                            <button onclick="animateStringFor()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i data-feather="play" class="mr-2"></i> Play Animation
+                            </button>
+                        </div>
+
+                        <!-- Range Loop Tab -->
+                        <div id="string-range" class="tab-content">
+                            <h3 class="text-xl font-semibold mb-3">Using <code>for i in range</code></h3>
+                            <div class="code-block">
+                                fruit = "Apple"<br>
+                                for i in range(len(fruit)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;print(fruit[i])
+                            </div>
+                            <div class="flex justify-center my-4">
+                                <div id="string-range-visual" class="flex flex-wrap justify-center">
+                                    <div class="text-center">
+                                        <div class="fruit-box" data-index="0" data-char="A">A</div>
+                                        <div class="index-label">i = 0</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="fruit-box" data-index="1" data-char="p">p</div>
+                                        <div class="index-label">i = 1</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="fruit-box" data-index="2" data-char="p">p</div>
+                                        <div class="index-label">i = 2</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="fruit-box" data-index="3" data-char="l">l</div>
+                                        <div class="index-label">i = 3</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="fruit-box" data-index="4" data-char="e">e</div>
+                                        <div class="index-label">i = 4</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="output-box" id="string-range-output"></div>
+                            <button onclick="animateStringRange()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i data-feather="play" class="mr-2"></i> Play Animation
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lists Accordion -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
+                <button class="accordion-header w-full text-left px-6 py-4 bg-green-100 hover:bg-green-200 transition flex justify-between items-center">
+                    <h2 class="text-2xl font-semibold text-green-700">Lists</h2>
+                    <i data-feather="chevron-down" class="accordion-icon transform transition"></i>
+                </button>
+                <div class="accordion-content px-6">
+                    <div class="py-4">
+                        <div class="flex mb-4">
+                            <button class="tab-button active" onclick="openTab(event, 'list-manual')">Manual Printing</button>
+                            <button class="tab-button" onclick="openTab(event, 'list-for')">For Loop</button>
+                            <button class="tab-button" onclick="openTab(event, 'list-range')">Range Loop</button>
+                        </div>
+
+                        <!-- Manual Printing Tab -->
+                        <div id="list-manual" class="tab-content active">
+                            <h3 class="text-xl font-semibold mb-3">Printing Each Item Manually</h3>
+                            <div class="code-block">
+                                print("Apple")<br>
+                                print("Banana")<br>
+                                print("Cherry")
+                            </div>
+                            <div class="flex justify-center my-4">
+                                <div id="list-manual-visual" class="flex">
+                                    <div class="fruit-box" data-item="Apple">Apple</div>
+                                    <div class="fruit-box" data-item="Banana">Banana</div>
+                                    <div class="fruit-box" data-item="Cherry">Cherry</div>
+                                </div>
+                            </div>
+                            <div class="output-box" id="list-manual-output"></div>
+                            <button onclick="animateListManual()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i data-feather="play" class="mr-2"></i> Play Animation
+                            </button>
+                        </div>
+
+                        <!-- For Loop Tab -->
+                        <div id="list-for" class="tab-content">
+                            <h3 class="text-xl font-semibold mb-3">Using <code>for item in list</code></h3>
+                            <div class="code-block">
+                                fruits = ["Apple", "Banana", "Cherry"]<br>
+                                for fruit in fruits:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;print(fruit)
+                            </div>
+                            <div class="flex justify-center my-4">
+                                <div id="list-for-visual" class="flex">
+                                    <div class="fruit-box" data-item="Apple">Apple</div>
+                                    <div class="fruit-box" data-item="Banana">Banana</div>
+                                    <div class="fruit-box" data-item="Cherry">Cherry</div>
+                                </div>
+                            </div>
+                            <div class="output-box" id="list-for-output"></div>
+                            <button onclick="animateListFor()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i data-feather="play" class="mr-2"></i> Play Animation
+                            </button>
+                        </div>
+
+                        <!-- Range Loop Tab -->
+                        <div id="list-range" class="tab-content">
+                            <h3 class="text-xl font-semibold mb-3">Using <code>for i in range</code></h3>
+                            <div class="code-block">
+                                fruits = ["Apple", "Banana", "Cherry"]<br>
+                                for i in range(len(fruits)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;print(fruits[i])
+                            </div>
+                            <div class="flex justify-center my-4">
+                                <div id="list-range-visual" class="flex flex-wrap justify-center">
+                                    <div class="text-center">
+                                        <div class="fruit-box" data-index="0" data-item="Apple">Apple</div>
+                                        <div class="index-label">i = 0</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="fruit-box" data-index="1" data-item="Banana">Banana</div>
+                                        <div class="index-label">i = 1</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="fruit-box" data-index="2" data-item="Cherry">Cherry</div>
+                                        <div class="index-label">i = 2</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="output-box" id="list-range-output"></div>
+                            <button onclick="animateListRange()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i data-feather="play" class="mr-2"></i> Play Animation
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tuples Accordion -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6">
+                <button class="accordion-header w-full text-left px-6 py-4 bg-purple-100 hover:bg-purple-200 transition flex justify-between items-center">
+                    <h2 class="text-2xl font-semibold text-purple-700">Tuples</h2>
+                    <i data-feather="chevron-down" class="accordion-icon transform transition"></i>
+                </button>
+                <div class="accordion-content px-6">
+                    <div class="py-4">
+                        <div class="flex mb-4">
+                            <button class="tab-button active" onclick="openTab(event, 'tuple-manual')">Manual Printing</button>
+                            <button class="tab-button" onclick="openTab(event, 'tuple-for')">For Loop</button>
+                            <button class="tab-button" onclick="openTab(event, 'tuple-range')">Range Loop</button>
+                        </div>
+
+                        <!-- Manual Printing Tab -->
+                        <div id="tuple-manual" class="tab-content active">
+                            <h3 class="text-xl font-semibold mb-3">Printing Each Item Manually</h3>
+                            <div class="code-block">
+                                print("Dog")<br>
+                                print("Cat")<br>
+                                print("Rabbit")
+                            </div>
+                            <div class="flex justify-center my-4">
+                                <div id="tuple-manual-visual" class="flex">
+                                    <div class="fruit-box" data-item="Dog">Dog</div>
+                                    <div class="fruit-box" data-item="Cat">Cat</div>
+                                    <div class="fruit-box" data-item="Rabbit">Rabbit</div>
+                                </div>
+                            </div>
+                            <div class="output-box" id="tuple-manual-output"></div>
+                            <button onclick="animateTupleManual()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i data-feather="play" class="mr-2"></i> Play Animation
+                            </button>
+                        </div>
+
+                        <!-- For Loop Tab -->
+                        <div id="tuple-for" class="tab-content">
+                            <h3 class="text-xl font-semibold mb-3">Using <code>for item in tuple</code></h3>
+                            <div class="code-block">
+                                animals = ("Dog", "Cat", "Rabbit")<br>
+                                for animal in animals:<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;print(animal)
+                            </div>
+                            <div class="flex justify-center my-4">
+                                <div id="tuple-for-visual" class="flex">
+                                    <div class="fruit-box" data-item="Dog">Dog</div>
+                                    <div class="fruit-box" data-item="Cat">Cat</div>
+                                    <div class="fruit-box" data-item="Rabbit">Rabbit</div>
+                                </div>
+                            </div>
+                            <div class="output-box" id="tuple-for-output"></div>
+                            <button onclick="animateTupleFor()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i data-feather="play" class="mr-2"></i> Play Animation
+                            </button>
+                        </div>
+
+                        <!-- Range Loop Tab -->
+                        <div id="tuple-range" class="tab-content">
+                            <h3 class="text-xl font-semibold mb-3">Using <code>for i in range</code></h3>
+                            <div class="code-block">
+                                animals = ("Dog", "Cat", "Rabbit")<br>
+                                for i in range(len(animals)):<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;print(animals[i])
+                            </div>
+                            <div class="flex justify-center my-4">
+                                <div id="tuple-range-visual" class="flex flex-wrap justify-center">
+                                    <div class="text-center">
+                                        <div class="fruit-box" data-index="0" data-item="Dog">Dog</div>
+                                        <div class="index-label">i = 0</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="fruit-box" data-index="1" data-item="Cat">Cat</div>
+                                        <div class="index-label">i = 1</div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="fruit-box" data-index="2" data-item="Rabbit">Rabbit</div>
+                                        <div class="index-label">i = 2</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="output-box" id="tuple-range-output"></div>
+                            <button onclick="animateTupleRange()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center">
+                                <i data-feather="play" class="mr-2"></i> Play Animation
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Accordion functionality
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const accordionContent = header.nextElementSibling;
+                const accordionIcon = header.querySelector('.accordion-icon');
+                
+                if (accordionContent.style.maxHeight) {
+                    accordionContent.style.maxHeight = null;
+                    accordionIcon.classList.remove('rotate-180');
+                } else {
+                    accordionContent.style.maxHeight = accordionContent.scrollHeight + 'px';
+                    accordionIcon.classList.add('rotate-180');
+                }
+            });
+        });
+
+        // Tab functionality
+        function openTab(evt, tabName) {
+            const tabContents = document.querySelectorAll('.tab-content');
+            const tabButtons = document.querySelectorAll('.tab-button');
+            
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            evt.currentTarget.classList.add('active');
+        }
+
+        // Animation functions for Strings
+        function animateStringManual() {
+            const boxes = document.querySelectorAll('#string-manual-visual .fruit-box');
+            const output = document.getElementById('string-manual-output');
+            output.innerHTML = '';
+            
+            boxes.forEach((box, index) => {
+                setTimeout(() => {
+                    // Reset all boxes
+                    boxes.forEach(b => b.classList.remove('active-fruit'));
+                    
+                    // Highlight current box
+                    box.classList.add('active-fruit');
+                    
+                    // Add to output
+                    output.innerHTML += box.textContent + '<br>';
+                }, index * 1000);
+            });
+        }
+
+        function animateStringFor() {
+            const boxes = document.querySelectorAll('#string-for-visual .fruit-box');
+            const output = document.getElementById('string-for-output');
+            output.innerHTML = '';
+            
+            boxes.forEach((box, index) => {
+                setTimeout(() => {
+                    // Reset all boxes
+                    boxes.forEach(b => b.classList.remove('active-fruit'));
+                    
+                    // Highlight current box
+                    box.classList.add('active-fruit');
+                    
+                    // Add to output with variable info
+                    output.innerHTML += `char = '${box.textContent}' → print('${box.textContent}')<br>`;
+                }, index * 1000);
+            });
+        }
+
+        function animateStringRange() {
+            const boxes = document.querySelectorAll('#string-range-visual .fruit-box');
+            const output = document.getElementById('string-range-output');
+            output.innerHTML = '';
+            
+            boxes.forEach((box, index) => {
+                setTimeout(() => {
+                    // Reset all boxes
+                    boxes.forEach(b => b.classList.remove('active-fruit'));
+                    
+                    // Highlight current box
+                    box.classList.add('active-fruit');
+                    
+                    // Add to output with index info
+                    const char = box.textContent;
+                    output.innerHTML += `i = ${index} → fruit[${index}] = '${char}' → print('${char}')<br>`;
+                }, index * 1000);
+            });
+        }
+
+        // Animation functions for Lists (similar to strings)
+        function animateListManual() {
+            const boxes = document.querySelectorAll('#list-manual-visual .fruit-box');
+            const output = document.getElementById('list-manual-output');
+            output.innerHTML = '';
+            
+            boxes.forEach((box, index) => {
+                setTimeout(() => {
+                    boxes.forEach(b => b.classList.remove('active-fruit'));
+                    box.classList.add('active-fruit');
+                    output.innerHTML += box.textContent + '<br>';
+                }, index * 1000);
+            });
+        }
+
+        function animateListFor() {
+            const boxes = document.querySelectorAll('#list-for-visual .fruit-box');
+            const output = document.getElementById('list-for-output');
+            output.innerHTML = '';
+            
+            boxes.forEach((box, index) => {
+                setTimeout(() => {
+                    boxes.forEach(b => b.classList.remove('active-fruit'));
+                    box.classList.add('active-fruit');
+                    output.innerHTML += `fruit = '${box.textContent}' → print('${box.textContent}')<br>`;
+                }, index * 1000);
+            });
+        }
+
+        function animateListRange() {
+            const boxes = document.querySelectorAll('#list-range-visual .fruit-box');
+            const output = document.getElementById('list-range-output');
+            output.innerHTML = '';
+            
+            boxes.forEach((box, index) => {
+                setTimeout(() => {
+                    boxes.forEach(b => b.classList.remove('active-fruit'));
+                    box.classList.add('active-fruit');
+                    const item = box.textContent;
+                    output.innerHTML += `i = ${index} → fruits[${index}] = '${item}' → print('${item}')<br>`;
+                }, index * 1000);
+            });
+        }
+
+        // Animation functions for Tuples (similar to lists)
+        function animateTupleManual() {
+            const boxes = document.querySelectorAll('#tuple-manual-visual .fruit-box');
+            const output = document.getElementById('tuple-manual-output');
+            output.innerHTML = '';
+            
+            boxes.forEach((box, index) => {
+                setTimeout(() => {
+                    boxes.forEach(b => b.classList.remove('active-fruit'));
+                    box.classList.add('active-fruit');
+                    output.innerHTML += box.textContent + '<br>';
+                }, index * 1000);
+            });
+        }
+
+        function animateTupleFor() {
+            const boxes = document.querySelectorAll('#tuple-for-visual .fruit-box');
+            const output = document.getElementById('tuple-for-output');
+            output.innerHTML = '';
+            
+            boxes.forEach((box, index) => {
+                setTimeout(() => {
+                    boxes.forEach(b => b.classList.remove('active-fruit'));
+                    box.classList.add('active-fruit');
+                    output.innerHTML += `animal = '${box.textContent}' → print('${box.textContent}')<br>`;
+                }, index * 1000);
+            });
+        }
+
+        function animateTupleRange() {
+            const boxes = document.querySelectorAll('#tuple-range-visual .fruit-box');
+            const output = document.getElementById('tuple-range-output');
+            output.innerHTML = '';
+            
+            boxes.forEach((box, index) => {
+                setTimeout(() => {
+                    boxes.forEach(b => b.classList.remove('active-fruit'));
+                    box.classList.add('active-fruit');
+                    const item = box.textContent;
+                    output.innerHTML += `i = ${index} → animals[${index}] = '${item}' → print('${item}')<br>`;
+                }, index * 1000);
+            });
+        }
+
+        // Initialize feather icons
+        document.addEventListener('DOMContentLoaded', function() {
+            feather.replace();
+            
+            // Open first accordion by default
+            const firstAccordion = document.querySelector('.accordion-header');
+            firstAccordion.click();
+        });
+    </script>
+</body>
+</html>
